@@ -1,0 +1,11 @@
+{
+  "name": "kira-design-system",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "generate-tokens": "pnpm --filter kira-ui generate-tokens",
+    "build": "pnpm --filter kira-ui build",
+    "dev": "pnpm --filter docs dev",
+    "typecheck": "pnpm -r typecheck"
+  }
+}
