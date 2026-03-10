@@ -1,16 +1,15 @@
 # Kira — Status
 
 ## Current status
-Fixed Kira'\''s Next.js + Tailwind v4 setup bug (postcss-import, @source directive, duplicate import)
+Fixed Kira'\''s Next.js + Tailwind v4 setup bug, added validator script, published Kira 0.2.1, scaffolded Neerh Deka portfolio site, built and tested sync-ds component pipeline with Tooltip component
 
 ## Last session
 Date: 2026-03-10
-Worked on: Fixed Kira'\''s Next.js + Tailwind v4 setup bug (postcss-import, @source directive, duplicate import)
-Shipped: Added setup documentation and validator script to Kira README
-Blocked: Published Kira 0.2.1 to npm
+Worked on: Fixed Kira'\''s Next.js + Tailwind v4 setup bug, added validator script, published Kira 0.2.1, scaffolded Neerh Deka portfolio site, built and tested sync-ds component pipeline with Tooltip component
+Shipped: sync-ds pipeline works end to end — Tooltip synced from Neerh Deka to Kira in one command
 
 ## Next action
-Scaffolded the Neerh Deka portfolio website using Kira components
+Refine Design system
 
 ## Last updated
 2026-03-10
