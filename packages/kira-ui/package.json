@@ -15,7 +15,7 @@
     "./tokens": "./src/tokens/kira-tokens-v2.json"
   },
   "type": "module",
-  "files": ["dist", "src/tokens"],
+  "files": ["dist", "src/tokens", "scripts/check-setup.js"],
   "scripts": {
     "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
     "generate-tokens": "tsx scripts/generate-tokens.ts",
