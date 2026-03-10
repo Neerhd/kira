@@ -1,30 +1,19 @@
 # Kira — Status
 
 ## Current status
-Design system v0.1 shipped. Token architecture
-live, 8 React components built, docs site on
-Vercel. Working toward v0.2 polish and npm publish.
+Fixed Kira'\''s Next.js + Tailwind v4 setup bug (postcss-import, @source directive, duplicate import)
 
 ## Last session
-Date: 2026-03-09
-Worked on: Kira design system v0.1
-Shipped: Token architecture with 117 global +
-32 semantic variables. Button, Badge, Input,
-Textarea, Card, Divider, Avatar, Typography
-components. Docs site live on Vercel with
-live previews, code snippets, token reference,
-theme switcher.
-Blocked: Token page shows aliases not resolved
-values. Docs site does not use its own tokens
-visually. Name shows Kira UI instead of Kira.
-npm publish not set up yet.
+Date: 2026-03-10
+Worked on: Fixed Kira'\''s Next.js + Tailwind v4 setup bug (postcss-import, @source directive, duplicate import)
+Shipped: Added setup documentation and validator script to Kira README
+Blocked: Published Kira 0.2.1 to npm
 
 ## Next action
-Kira v0.2 polish → npm publish kira-ui →
-personal site scaffold
+Scaffolded the Neerh Deka portfolio website using Kira components
 
 ## Last updated
-2026-03-09
+2026-03-10
 
 ---
 
