@@ -4,6 +4,7 @@ interface TokenEntry {
   name: string;
   varName: string;
   value: string;
+  resolvedValue: string;
   cssValue: string;
   description?: string;
 }
@@ -54,6 +55,27 @@ function parseSemanticPath(parts: string[]): string {
   return `--kira-semantic-${category}-${rest.join("-")}`;
 }
 
+// Resolves alias strings like {global.color.neutral.50} → #F8F7F4
+// by walking the token JSON using the dot-separated path.
+// Falls back to the raw alias string if resolution fails.
+function resolveAlias(value: string, tokenData: Record<string, unknown>): string {
+  if (!value.startsWith("{") || !value.endsWith("}")) return value;
+  const path = value.slice(1, -1); // e.g. "global.color.neutral.50"
+  const parts = path.split(".");
+  let node: unknown = tokenData;
+  for (const part of parts) {
+    if (typeof node !== "object" || node === null) return value;
+    node = (node as Record<string, unknown>)[part];
+  }
+  if (isLeaf(node)) return node.value;
+  return value;
+}
+
+const tokens = tokensRaw as unknown as {
+  global: Record<string, unknown>;
+  semantic: Record<string, unknown>;
+};
+
 function flattenNode(
   node: unknown,
   path: string[] = [],
@@ -66,6 +88,7 @@ function flattenNode(
     const cur = [...path, key];
     if (isLeaf(val)) {
       const varName = mode === "global" ? parseGlobalPath(cur) : parseSemanticPath(cur);
+      const resolvedValue = resolveAlias(val.value, tokens as unknown as Record<string, unknown>);
       const cssValue = val.value.startsWith("{")
         ? `var(${parseGlobalPath(val.value.slice(1, -1).replace("global.", "").split("."))})`
         : val.value;
@@ -73,6 +96,7 @@ function flattenNode(
         name: cur.join("."),
         varName,
         value: val.value,
+        resolvedValue,
         cssValue,
         description: val.description,
       });
@@ -82,11 +106,6 @@ function flattenNode(
   }
   return entries;
 }
-
-const tokens = tokensRaw as unknown as {
-  global: Record<string, unknown>;
-  semantic: Record<string, unknown>;
-};
 
 function groupGlobal(): TokenGroup[] {
   const groups: TokenGroup[] = [];
@@ -133,16 +152,25 @@ function isColor(varName: string, value: string): boolean {
   );
 }
 
-function ColorSwatch({ cssValue, value }: { cssValue: string; value: string }) {
-  const raw = /^#[0-9a-fA-F]{3,8}$/.test(value) ? value : cssValue;
+// Pill style for all --kira- variable names
+const varNameStyle: React.CSSProperties = {
+  fontFamily: "'DM Mono', monospace",
+  fontSize: "13px",
+  backgroundColor: "#F1F0EC",
+  padding: "2px 6px",
+  borderRadius: "4px",
+  color: "#323230",
+};
+
+function ColorSwatch({ resolvedValue }: { resolvedValue: string }) {
   return (
     <div
       style={{
         width: "24px",
         height: "24px",
         borderRadius: "6px",
-        backgroundColor: raw,
-        border: "1px solid var(--kira-border-default)",
+        backgroundColor: resolvedValue,
+        border: "1px solid #E2E1DC",
         flexShrink: 0,
       }}
     />
@@ -169,27 +197,11 @@ export default function TokensPage() {
         </h1>
         <p style={{ fontSize: "15px", color: "var(--kira-text-secondary)", margin: 0, lineHeight: "1.6" }}>
           All CSS custom properties generated from{" "}
-          <code
-            style={{
-              fontFamily: "var(--kira-font-family-mono)",
-              fontSize: "13px",
-              backgroundColor: "var(--kira-bg-surface)",
-              padding: "2px 6px",
-              borderRadius: "4px",
-            }}
-          >
+          <code style={varNameStyle}>
             kira-tokens-v2.json
           </code>
           . Import via{" "}
-          <code
-            style={{
-              fontFamily: "var(--kira-font-family-mono)",
-              fontSize: "13px",
-              backgroundColor: "var(--kira-bg-surface)",
-              padding: "2px 6px",
-              borderRadius: "4px",
-            }}
-          >
+          <code style={varNameStyle}>
             {"import 'kira-ui/styles'"}
           </code>
           .
@@ -299,13 +311,7 @@ function TokenTable({ group }: { group: TokenGroup }) {
                 }}
               >
                 <td style={{ padding: "10px 14px" }}>
-                  <code
-                    style={{
-                      fontFamily: "var(--kira-font-family-mono), monospace",
-                      color: "var(--kira-text-primary)",
-                      fontSize: "12px",
-                    }}
-                  >
+                  <code style={varNameStyle}>
                     {token.varName}
                   </code>
                   {token.description && (
@@ -317,17 +323,17 @@ function TokenTable({ group }: { group: TokenGroup }) {
                 <td style={{ padding: "10px 14px" }}>
                   <code
                     style={{
-                      fontFamily: "var(--kira-font-family-mono), monospace",
+                      fontFamily: "'DM Mono', monospace",
                       color: "var(--kira-text-secondary)",
                       fontSize: "12px",
                     }}
                   >
-                    {token.value}
+                    {token.resolvedValue}
                   </code>
                 </td>
                 <td style={{ padding: "10px 14px" }}>
-                  {(isColor(token.varName, token.value)) && (
-                    <ColorSwatch cssValue={token.cssValue} value={token.value} />
+                  {isColor(token.varName, token.resolvedValue) && (
+                    <ColorSwatch resolvedValue={token.resolvedValue} />
                   )}
                 </td>
               </tr>
