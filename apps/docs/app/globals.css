@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Override the hardcoded background-color shiki injects inline on <pre class="shiki"> */
+pre.shiki {
+  background-color: var(--kira-bg-surface) !important;
+}

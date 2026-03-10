@@ -50,7 +50,7 @@ export function Sidebar() {
               letterSpacing: "-0.02em",
             }}
           >
-            Kira UI
+            Kira
           </span>
         </Link>
         <span
@@ -61,7 +61,7 @@ export function Sidebar() {
             fontWeight: 500,
           }}
         >
-          v0.1.0
+          v0.2.0
         </span>
       </div>
 

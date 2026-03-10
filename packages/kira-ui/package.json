@@ -1,7 +1,7 @@
 {
   "name": "kira-ui",
-  "version": "0.1.0",
-  "description": "Kira Design System component library",
+  "version": "0.2.0",
+  "description": "Kira — component library and design token system",
   "main": "./dist/kira-ui.umd.js",
   "module": "./dist/kira-ui.es.js",
   "types": "./dist/index.d.ts",
@@ -15,11 +15,12 @@
     "./tokens": "./src/tokens/kira-tokens-v2.json"
   },
   "type": "module",
-  "files": ["dist"],
+  "files": ["dist", "src/tokens"],
   "scripts": {
     "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
     "generate-tokens": "tsx scripts/generate-tokens.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
   },
   "peerDependencies": {
     "react": ">=18",

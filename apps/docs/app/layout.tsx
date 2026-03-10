@@ -6,7 +6,7 @@ import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 export const metadata: Metadata = {
   title: "Kira Design System",
-  description: "Component library and design token reference for Kira UI",
+  description: "Component library and design token reference for Kira",
 };
 
 export default function RootLayout({
