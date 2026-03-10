@@ -38,3 +38,4 @@ export {
 
 // Utilities
 export { cn } from "./lib/utils";
+export { Tooltip } from './components/Tooltip';
